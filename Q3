@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+
+void interleaveQueue(queue<int>& q) {
+    // Get the size of the queue
+    int n = q.size();
+    if (n % 2 != 0) {
+        cout << "Queue has odd number of elements. Cannot interleave.\n";
+        return;
+    }
+
+    int half = n / 2;
+    queue<int> firstHalf;
+
+    // Push first half into another queue
+    for (int i = 0; i < half; i++) {
+        firstHalf.push(q.front());
+        q.pop();
+    }
+
+    // Now interleave elements from both queues
+    while (!firstHalf.empty()) {
+        q.push(firstHalf.front()); // from first half
+        firstHalf.pop();
+
+        q.push(q.front()); // from second half
+        q.pop();
+    }
+}
+
+int main() {
+    queue<int> q;
+    int n, val;
+
+    cout << "Enter number of elements (even size): ";
+    cin >> n;
+
+    cout << "Enter " << n << " elements:\n";
+    for (int i = 0; i < n; i++) {
+        cin >> val;
+        q.push(val);
+    }
+
+    cout << "Original Queue: ";
+    queue<int> temp = q;
+    while (!temp.empty()) {
+        cout << temp.front() << " ";
+        temp.pop();
+    }
+    cout << endl;
+
+    interleaveQueue(q);
+
+    cout << "Interleaved Queue: ";
+    while (!q.empty()) {
+        cout << q.front() << " ";
+        q.pop();
+    }
+    cout << endl;
+
+    return 0;
+}
